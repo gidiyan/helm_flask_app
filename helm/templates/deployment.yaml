@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "luxcampus.fullname" . }}
+  labels:
+    {{- include "luxcampus.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "luxcampus.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "luxcampus.selectorLabels" . | nindent 8 }}
+        app.metrics: {{ .Values.product }}
+    spec:
+      imagePullSecrets:
+        - name: {{ template "luxcampus.fullname" . }}-registry
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ include "luxcampus.fullname" . }}
+          - secretRef:
+              name: {{ include "luxcampus.fullname" . }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+

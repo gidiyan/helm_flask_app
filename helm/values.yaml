@@ -1,0 +1,38 @@
+nameOverride: "luxcampus"
+fullnameOverride: "luxcampus"
+
+cmd:
+  name: luxcampus
+
+replicaCount: 1
+
+product: orchestrate
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/scheme: "http"
+  prometheus.io/path: "/metrics"
+  prometheus.io/port: "8082"
+
+image:
+  repository: registry.gitlab.com/gidiyan/flask_app
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
+
+imageCredentials:
+  registry: registry.gitlab.com/gidiyan/flask_app
+  username: gitlab+deploy-token-801394
+  password: xgrMrcxX5xPzCzn4chcw
+
+service:
+  type: NodePort
+  http:
+    port: 5000
+
+environment:
+  DBUSER: "postgres"
+  DBHOST: "postgres-postgresql"
+  DBNAME: "postgres"
+
+environmentSecrets:
+  DBPASS: "postgres"
