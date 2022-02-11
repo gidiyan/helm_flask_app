@@ -25,9 +25,18 @@ imageCredentials:
   password: xgrMrcxX5xPzCzn4chcw
 
 service:
-  type: NodePort
+  type: ClusterIP
+  targetPort: http-api
+  protocol: TCP
+  name: http
   http:
-    port: 5000
+    port: 80
+
+containers:
+  ports:
+    name: http-api
+    containerPort: 5000
+    protocol: TCP
 
 environment:
   DBUSER: "postgres"
@@ -36,3 +45,8 @@ environment:
 
 environmentSecrets:
   DBPASS: "postgres"
+
+ingress:
+  hostname: my-app.com
+  path: /
+  pathType: Prefix

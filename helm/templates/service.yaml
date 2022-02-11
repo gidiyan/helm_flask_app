@@ -9,9 +9,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.http.port }}
-      targetPort: http
-      nodePort: 32000
-      name: http
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+      name: {{ .Values.service.name }}
   selector:
     {{- include "luxcampus.selectorLabels" . | nindent 4 }}
     app.metrics: {{ .Values.product }}

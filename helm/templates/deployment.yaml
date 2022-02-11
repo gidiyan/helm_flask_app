@@ -30,7 +30,7 @@ spec:
           - secretRef:
               name: {{ include "luxcampus.fullname" . }}
           ports:
-            - name: http
-              containerPort: 5000
-              protocol: TCP
+            - name: {{ .Values.containers.ports.name }}
+              containerPort: {{ .Values.containers.ports.containerPort }}
+              protocol: {{ .Values.containers.ports.protocol }}
 
